@@ -1,0 +1,324 @@
+/* ============================================================
+   Joshua Palay — Digital CV
+   Clean executive styling: restrained palette, clear hierarchy
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   Color palette
+   Cool neutrals + a single deep slate accent.
+   Chosen for readability and a calm, senior-design presence.
+   ------------------------------------------------------------ */
+:root {
+  --ink: #14171a;          /* Primary text */
+  --muted: #5a636e;        /* Secondary text / dates */
+  --paper: #ffffff;        /* Content surface */
+  --page: #eef0f3;         /* Page background (cool, not cream) */
+  --rule: #d8dde3;         /* Dividers and table lines */
+  --accent: #0f3d5c;       /* Headings and brand emphasis */
+  --link: #1a5f8a;         /* Links — distinct from body text */
+  --link-hover: #0f3d5c;   /* Darker on hover for feedback */
+  --field: #f7f8fa;        /* Form field fill */
+  --max-width: 44rem;      /* Comfortable reading measure */
+}
+
+/* ------------------------------------------------------------
+   Base document
+   ------------------------------------------------------------ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 2.5rem 1.25rem 4rem;
+  background-color: var(--page);
+  color: var(--ink);
+  /* Primary: IBM Plex Sans — precise, professional; system fallbacks */
+  font-family: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1rem; /* 16px base — body text */
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Centered paper surface holding the CV content */
+.cv {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 2.75rem 2.5rem 3rem;
+  background-color: var(--paper);
+  border: 1px solid var(--rule);
+}
+
+/* ------------------------------------------------------------
+   Links
+   Underline removed by default; color distinguishes from body.
+   ------------------------------------------------------------ */
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+/* ------------------------------------------------------------
+   Typography hierarchy
+   Sizes step clearly: name → section → company → role → body
+   ------------------------------------------------------------ */
+h1 {
+  margin: 0 0 0.35rem;
+  color: var(--accent);
+  font-size: 2.25rem; /* Primary name — strongest signal */
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  text-align: left;
+  /* Soft depth — restrained, not decorative glow */
+  text-shadow: 0 1px 0 rgba(15, 61, 92, 0.08);
+}
+
+/* Job title under the name */
+.cv > p:first-of-type {
+  margin: 0 0 0.5rem;
+  color: var(--muted);
+  font-size: 0.8125rem; /* 13px — quiet supporting line */
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Contact line directly under the title */
+.cv > p:nth-of-type(2) {
+  margin: 0 0 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--accent);
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+h2 {
+  margin: 2rem 0 0.75rem;
+  color: var(--accent);
+  font-size: 0.75rem; /* Section labels — small but emphatic */
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+h3 {
+  margin: 1.5rem 0 0.2rem;
+  color: var(--ink);
+  font-size: 1.125rem; /* Company names */
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+h4 {
+  margin: 0.25rem 0 0;
+  color: var(--ink);
+  font-size: 1rem; /* Role titles */
+  font-weight: 600;
+}
+
+/* Space between successive roles (after a bullet list) */
+ul + h4 {
+  margin-top: 1.15rem;
+}
+
+p {
+  margin: 0 0 0.85rem;
+}
+
+/* Date / location lines that follow role headings — keep flush under the title */
+h4 + p {
+  margin-top: 0.1rem;
+  margin-bottom: 0.55rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+ul {
+  margin: 0 0 1rem;
+  padding-left: 1.15rem;
+}
+
+li {
+  margin-bottom: 0.45rem;
+}
+
+li::marker {
+  color: var(--accent);
+}
+
+strong {
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------
+   Tables — previous roles & awards
+   Compact, aligned columns; quiet rules instead of heavy chrome
+   ------------------------------------------------------------ */
+table {
+  width: 100%;
+  margin: 0 0 0.5rem;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+th,
+td {
+  padding: 0.55rem 0.75rem 0.55rem 0;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  color: var(--muted);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* First column carries the org name with slight emphasis */
+td:first-child {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ------------------------------------------------------------
+   Contact form
+   Minimal field styling — readable, not ornamental
+   ------------------------------------------------------------ */
+form {
+  margin-top: 0.5rem;
+}
+
+form p {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0.3rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+  width: 100%;
+  max-width: 28rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  background-color: var(--field);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+input:focus,
+textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  background-color: var(--paper);
+}
+
+button[type="submit"] {
+  padding: 0.65rem 1.35rem;
+  border: none;
+  border-radius: 2px;
+  background-color: var(--accent);
+  color: var(--paper);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover,
+button[type="submit"]:focus {
+  background-color: var(--link);
+}
+
+/* ------------------------------------------------------------
+   Print
+   Drop page chrome; keep ink-on-paper clarity
+   ------------------------------------------------------------ */
+@media print {
+  body {
+    padding: 0;
+    background: white;
+  }
+
+  .cv {
+    max-width: none;
+    padding: 0;
+    border: none;
+  }
+
+  a {
+    color: inherit;
+  }
+}
+
+/* ------------------------------------------------------------
+   Narrow viewports
+   ------------------------------------------------------------ */
+@media (max-width: 600px) {
+  body {
+    padding: 0;
+  }
+
+  .cv {
+    padding: 1.75rem 1.25rem 2.5rem;
+    border: none;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  tr {
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  td {
+    padding: 0.15rem 0;
+    border-bottom: none;
+  }
+}
