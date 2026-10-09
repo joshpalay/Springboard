@@ -1,0 +1,392 @@
+/* ============================================================
+   Joshua Palay — Digital CV (Flexbox layout)
+   Recreates the PDF’s left-label / right-content structure
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   Palette — near-black ink on paper, matching the print CV
+   ------------------------------------------------------------ */
+:root {
+  --ink: #111111;
+  --muted: #333333;
+  --paper: #ffffff;
+  --page: #f3f3f3;
+  --rule: #cccccc;
+  --link: #1a1a1a;
+  --link-hover: #000000;
+  --gutter: 1.25rem; /* Space between label and body */
+  --max-width: 52rem;
+}
+
+/* ------------------------------------------------------------
+   Base
+   ------------------------------------------------------------ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 2rem 1rem 3.5rem;
+  background-color: var(--page);
+  color: var(--ink);
+  /* Sans for chrome/labels; serif for reading text (PDF pairing) */
+  font-family: "Source Serif 4", "Times New Roman", Times, serif;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Main sheet: vertical flex stack of header + sections */
+.cv {
+  display: flex;
+  flex-direction: column;
+  gap: 1.65rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 2.75rem 2.5rem 3rem;
+  background-color: var(--paper);
+  border: 1px solid var(--rule);
+}
+
+/* ------------------------------------------------------------
+   Links — no default underline; slightly distinct from body
+   ------------------------------------------------------------ */
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+/* ------------------------------------------------------------
+   Header — centered column via Flexbox (matches PDF top)
+   ------------------------------------------------------------ */
+.cv-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.cv-header h1 {
+  margin: 0;
+  font-family: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  /* Soft depth for the name, as required by the styling exercise */
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+}
+
+.cv-title {
+  margin: 0;
+  font-family: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.cv-contact {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.15rem 0 0;
+  font-family: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.875rem;
+}
+
+.cv-contact .sep {
+  color: var(--muted);
+}
+
+/* ------------------------------------------------------------
+   Section rows — Flexbox two-column: label | body
+   This is the core advanced layout matching the PDF
+   ------------------------------------------------------------ */
+.cv-section {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--gutter);
+}
+
+.cv-label {
+  /* LH ~20% of the row */
+  flex: 1 1 0;
+  margin: 0;
+  font-family: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: right; /* Categories sit flush to the gutter */
+  /* Allow multi-line labels like “Previous Work Experience” */
+  text-wrap: balance;
+}
+
+.cv-body {
+  /* RH ~80% of the row (4:1 vs label) */
+  flex: 4 1 0;
+  min-width: 0; /* Prevent flex item overflow */
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.cv-body > p {
+  margin: 0;
+}
+
+/* ------------------------------------------------------------
+   Jobs inside Recent Work
+   ------------------------------------------------------------ */
+.job {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.job h3 {
+  margin: 0;
+  font-family: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.job .role {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.job .meta {
+  margin: 0 0 0.35rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-style: italic;
+  line-height: 1.3;
+}
+
+.job .summary {
+  margin: 0 0 0.35rem;
+}
+
+.job ul {
+  margin: 0.15rem 0 0;
+  padding-left: 1.2rem;
+}
+
+.job li {
+  margin-bottom: 0.4rem;
+}
+
+.job li:last-child {
+  margin-bottom: 0;
+}
+
+.job strong {
+  font-weight: 700;
+}
+
+/* Visually hide repeated company for second Ford role; keep for a11y */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ------------------------------------------------------------
+   Compact entry lists (Previous / Awards / Education)
+   Each entry is a vertical flex stack: org → detail
+   ------------------------------------------------------------ */
+.entry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.entry-org {
+  font-family: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.entry-detail {
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+/* ------------------------------------------------------------
+   Footer line under Education
+   ------------------------------------------------------------ */
+.cv-footer {
+  /* Full-width break from the two-column section layout */
+  width: 100%;
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
+}
+
+/* ------------------------------------------------------------
+   Contact form — flex column fields, aligned in right rail
+   ------------------------------------------------------------ */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  max-width: 26rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.field--actions {
+  flex-direction: row;
+  align-items: center;
+}
+
+label {
+  font-family: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  background: #fafafa;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+input:focus,
+textarea:focus {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+  background: var(--paper);
+}
+
+button[type="submit"] {
+  padding: 0.55rem 1.25rem;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover,
+button[type="submit"]:focus {
+  background: #000000;
+}
+
+/* ------------------------------------------------------------
+   Print
+   ------------------------------------------------------------ */
+@media print {
+  body {
+    padding: 0;
+    background: white;
+  }
+
+  .cv {
+    max-width: none;
+    padding: 0.5in 0.65in;
+    border: none;
+    gap: 1.25rem;
+  }
+
+  .cv-section--form {
+    display: none; /* Form is for the web exercise, not print */
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+/* ------------------------------------------------------------
+   Narrow viewports — stack label above body
+   ------------------------------------------------------------ */
+@media (max-width: 700px) {
+  body {
+    padding: 0;
+  }
+
+  .cv {
+    padding: 1.75rem 1.25rem 2.5rem;
+    border: none;
+    gap: 1.35rem;
+  }
+
+  .cv-section {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .cv-label {
+    flex: 0 0 auto;
+    width: 100%;
+    text-align: left;
+  }
+
+  .cv-body {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  .cv-footer {
+    width: 100%;
+  }
+
+  .cv-header h1 {
+    font-size: 1.65rem;
+  }
+}
