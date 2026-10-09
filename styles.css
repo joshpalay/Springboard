@@ -53,16 +53,19 @@ body {
 
 /* ------------------------------------------------------------
    Links — no default underline; slightly distinct from body
+   Transitions only on interactive UI (not static resume text)
    ------------------------------------------------------------ */
 a {
   color: var(--link);
   text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 a:hover,
 a:focus {
   color: var(--link-hover);
-  text-decoration: underline;
+  border-bottom-color: currentColor;
 }
 
 /* ------------------------------------------------------------
@@ -253,8 +256,14 @@ a:focus {
 .cv-footer {
   /* Full-width break from the two-column section layout */
   width: 100%;
-  margin: 0.5rem 0 0;
+  margin: 0.75rem 0 0;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
   font-size: 0.95rem;
+  text-align: center;
+  line-height: 1.45;
+  overflow-wrap: anywhere; /* Keep long LinkedIn URL from blowing the layout */
 }
 
 /* ------------------------------------------------------------
@@ -298,13 +307,20 @@ textarea {
   font-family: inherit;
   font-size: 0.95rem;
   line-height: 1.35;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:hover,
+textarea:hover {
+  border-color: #999999;
 }
 
 input:focus,
 textarea:focus {
-  outline: 2px solid var(--ink);
-  outline-offset: 1px;
+  outline: none;
+  border-color: var(--ink);
   background: var(--paper);
+  box-shadow: 0 0 0 2px rgba(17, 17, 17, 0.12);
 }
 
 button[type="submit"] {
@@ -319,11 +335,28 @@ button[type="submit"] {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
 }
 
 button[type="submit"]:hover,
 button[type="submit"]:focus {
   background: #000000;
+  border-color: #000000;
+}
+
+button[type="submit"]:active {
+  opacity: 0.85;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  a,
+  input[type="text"],
+  input[type="email"],
+  textarea,
+  button[type="submit"] {
+    transition: none;
+  }
 }
 
 /* ------------------------------------------------------------
