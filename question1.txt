@@ -1,0 +1,7 @@
+Question 1: Potential variables for Caesar's secret party and the Caesar Cipher
+
+partyLocation
+shiftValue
+encryptedMessage
+decryptedMessage
+isPartySafe
