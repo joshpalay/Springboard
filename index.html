@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!--
+  I CAN HAZ MEMEZ? — page structure only.
+
+  Looks live in styles.css. Behavior lives in script.js.
+  The ids on this page (#meme-form, #meme-gallery, #image-url,
+  #top-text, #bottom-text) are how script.js finds these elements.
+-->
+<html lang="en">
+  <head>
+    <!-- So symbols such as hearts and curly quotes display correctly -->
+    <meta charset="UTF-8">
+
+    <!-- Lets the layout scale to the device width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Text shown on the browser tab -->
+    <title>I CAN HAZ MEMEZ?</title>
+
+    <!-- All visual rules are in this file. None are written in this HTML. -->
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <!-- Title and the form that collects one meme's details -->
+    <header class="controls">
+      <div class="controls-inner">
+        <h1>I CAN HAZ MEMEZ?</h1>
+        <p class="subtitle">Fill out the form to start creating memes!</p>
+
+        <!--
+          script.js listens for this form's "submit" event.
+          required: the browser blocks submit while a field is empty.
+          type="url": the image field must look like a web address.
+        -->
+        <form id="meme-form">
+          <div class="field">
+            <!-- for matches the input id, so clicking the label focuses that input -->
+            <label for="image-url">Image URL</label>
+            <input
+              id="image-url"
+              type="url"
+              required
+              placeholder="What's the URL for your meme image?"
+            >
+          </div>
+
+          <div class="field">
+            <label for="top-text">Text On Top</label>
+            <input
+              id="top-text"
+              type="text"
+              required
+              placeholder="What text do you want at the top of the meme?"
+            >
+          </div>
+
+          <div class="field">
+            <label for="bottom-text">Text On Bottom</label>
+            <input
+              id="bottom-text"
+              type="text"
+              required
+              placeholder="What text do you want at the bottom of the meme?"
+            >
+          </div>
+
+          <div class="form-actions">
+            <!-- type="submit" fires the form's submit event (also triggered by Enter) -->
+            <button type="submit">Add Meme</button>
+          </div>
+        </form>
+      </div>
+    </header>
+
+    <!--
+      Starts empty. script.js appends one meme div here on each successful submit.
+      aria-live="polite" tells screen readers to announce memes as they appear.
+    -->
+    <main>
+      <section id="meme-gallery" aria-live="polite"></section>
+    </main>
+
+    <!--
+      Loaded last so the elements above already exist when the script runs.
+    -->
+    <script src="script.js"></script>
+  </body>
+</html>
