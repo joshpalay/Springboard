@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<!--
+  Giphy Party — page structure only.
+
+  Nothing on this page is styled here, and nothing here talks to the API.
+  style.css is every visual rule. index.js is every behavior: searching,
+  appending one GIF, and clearing the list.
+
+  Two ways elements are named:
+    id="..."     is how index.js finds an element (querySelector("#search-form")).
+    class="..."  is how style.css paints it (.search-form { ... }).
+  An element can have both. The id is a hook for JavaScript. The class is a hook for CSS.
+-->
+<html lang="en">
+  <head>
+    <!-- So letters, quotes, and the ellipsis in "Searching…" display correctly. -->
+    <meta charset="UTF-8">
+
+    <!-- Lets the layout use the device width instead of a fake desktop width. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Text shown on the browser tab. -->
+    <title>Giphy Party</title>
+
+    <!-- All visual rules are in this file. None are written in this HTML. -->
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <!--
+      The whole app sits in one <main>. The class "page" centers it and
+      limits how wide it can grow. See .page in style.css.
+    -->
+    <main class="page">
+      <h1 class="title">Giphy Party</h1>
+
+      <!--
+        index.js listens for this form's "submit" event.
+        Submit fires when the Search button is clicked or Enter is pressed
+        in the text field. There is no action="" or method="": we never
+        send this form to a server the old way. index.js cancels the
+        browser's default reload and calls Giphy with axios instead.
+
+        required: the browser will not submit while the field is completely empty.
+        Spaces-only input is caught in index.js, because "   " still counts
+        as a value to the required attribute.
+      -->
+      <form id="search-form" class="search-form">
+        <!--
+          for="search-input" ties this label to the input with that id.
+          Clicking the words "Search for a GIF" focuses the text field.
+          A placeholder is not a substitute for a label: it disappears
+          while the user types, and some assistive tech ignores it.
+        -->
+        <label class="search-label" for="search-input">Search for a GIF</label>
+        <input
+          class="search-input"
+          type="text"
+          id="search-input"
+          name="search"
+          placeholder="hilarious"
+          autocomplete="off"
+          enterkeyhint="search"
+          required
+        >
+        <div class="form-actions">
+          <!-- type="submit" fires the form's submit event. -->
+          <button class="button button-search" type="submit" id="search-btn">Search</button>
+
+          <!--
+            type="button" does NOT submit the form. Without it, this button
+            would default to submit and would search instead of clearing.
+            index.js listens for its "click" event and empties #gif-list.
+          -->
+          <button class="button button-remove" type="button" id="remove-btn">Remove GIFs</button>
+        </div>
+      </form>
+
+      <!--
+        Starts empty. index.js writes short messages here ("Searching…",
+        "Added a GIF…", "No GIFs found…") with textContent.
+        role="status" makes this a live region: screen readers announce
+        the text when it changes, without moving keyboard focus.
+      -->
+      <p id="status" class="status" role="status"></p>
+
+      <!--
+        Starts empty. Each successful search appends one <li class="gif-item">
+        containing an <img class="gif">. Earlier GIFs stay on the page.
+        A <ul> is the right element because the results are a list.
+        aria-label names that list for assistive tech, since it has no heading.
+      -->
+      <ul id="gif-list" class="gif-list" aria-label="GIF results"></ul>
+    </main>
+
+    <!--
+      Loaded at the end of <body> so the elements above already exist when
+      the scripts run. Order matters: axios creates the global axios function,
+      then index.js calls axios.get. If index.js ran first, axios would be undefined.
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,235 @@
+/*
+  Giphy Party — appearance only.
+
+  How this file is organized:
+    1. Variables    — colors and spacing, defined once
+    2. Page         — the background and the centered column
+    3. Form         — the label, the text field, and the two buttons
+    4. Status       — the line of text under the form
+    5. GIF list     — the wrapping row of images
+    6. Narrow screens — overrides that apply only on small windows
+
+  This file does not know about the Giphy API. It only styles classes
+  that index.html already has, plus .gif-item and .gif, which index.js
+  adds when it builds each result.
+
+  A rule further down overrides an earlier rule when both match the same
+  element with the same specificity. The phone rules are last on purpose.
+*/
+
+/* ---------------------------------------------------------------------------
+   1. Variables
+   Custom properties live on :root, which is the <html> element. Any rule
+   in this file can read them with var(--name). Change a color here and
+   every use of that variable updates.
+   --------------------------------------------------------------------------- */
+:root {
+  --ink: #24160f;        /* main text, also the dark border color */
+  --muted: #5c4a40;      /* the status line, quieter than the title */
+  --paper: #fff8f2;      /* page background */
+  --surface: #fff;       /* input and Remove button background */
+  --line: #24160f;       /* border around the field and both buttons */
+  --accent: #9a3412;     /* Search button fill. Dark enough that white text passes contrast. */
+  --accent-ink: #fff;    /* text on the Search button */
+  --gif-frame: #f0e4da;  /* shown behind a GIF while the file is still downloading */
+  --focus: #9a3412;      /* keyboard focus ring */
+  --space: 0.75rem;      /* gap between GIFs */
+}
+
+/* ---------------------------------------------------------------------------
+   2. Page
+   --------------------------------------------------------------------------- */
+
+/*
+  border-box: width and height include padding and border. A 250px-wide
+  GIF card stays 250px wide after padding is added, instead of growing.
+  The * selector applies this to every element.
+*/
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;                              /* browsers add a default margin; remove it */
+  font-family: Georgia, "Times New Roman", serif;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/*
+  The centered column. max-width stops the form and the GIF row from
+  stretching across a very wide monitor. margin: 0 auto centers that column.
+*/
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 3rem;             /* top, sides, bottom */
+}
+
+.title {
+  margin: 0 0 1rem;                       /* no default heading margin; space only underneath */
+  font-size: 2.25rem;
+  line-height: 1.15;
+}
+
+/* ---------------------------------------------------------------------------
+   3. Form
+   The form is a flex row that is allowed to wrap. The label uses
+   flex: 1 0 100%, so it always takes the whole first line and the input
+   and buttons sit on the line below.
+   --------------------------------------------------------------------------- */
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;                    /* row gap, then column gap */
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.search-label {
+  flex: 1 0 100%;                         /* grow, don't shrink, basis 100% of the row */
+  font-size: 1rem;
+}
+
+/*
+  The text field grows to fill leftover space (flex-grow 1) and will
+  shrink if the row is tight (flex-shrink 1). 16rem is the preferred
+  starting width. min-width: 0 lets it shrink below its content size
+  inside a flex row; without that, a long word can overflow the page.
+*/
+.search-input {
+  flex: 1 1 16rem;
+  min-width: 0;
+  padding: 0.65rem 0.75rem;
+  border: 2px solid var(--line);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;                          /* use the page font, not the browser's default input font */
+  font-size: 1rem;
+}
+
+/* The two buttons sit side by side and wrap together onto a new line if needed. */
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Shared shape of both buttons. Color is added by the two classes below. */
+.button {
+  padding: 0.65rem 1rem;
+  border: 2px solid var(--line);
+  border-radius: 4px;
+  font: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.button-search {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.button-remove {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+/* A small brighten on hover. Disabled buttons skip looking clickable. */
+.button:hover {
+  filter: brightness(1.05);
+}
+
+/*
+  index.js sets disabled on the Search button while a request is in flight.
+  :disabled is a pseudo-class that matches that state.
+*/
+.button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+/*
+  Keyboard focus ring. :focus-visible matches keyboard focus and not a
+  normal mouse click, so mouse users don't see a ring on every click.
+  outline-offset pulls the ring slightly outside the border.
+*/
+.search-input:focus-visible,
+.button:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   4. Status
+   The paragraph is always in the HTML. It is empty until index.js writes
+   a message. :empty matches it only while it has no text, so a blank
+   status does not leave a gap under the form.
+   --------------------------------------------------------------------------- */
+.status {
+  margin: 0 0 1rem;
+  color: var(--muted);
+}
+
+.status:empty {
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   5. GIF list
+   #gif-list in the HTML is a <ul>. These rules turn that list into a
+   wrapping row of images. list-style, margin, and padding remove the
+   bullets and the indent browsers give every <ul> by default.
+   --------------------------------------------------------------------------- */
+.gif-list {
+  display: flex;
+  flex-wrap: wrap;                        /* extra GIFs wrap onto the next line */
+  gap: var(--space);
+  align-items: flex-start;                /* a tall GIF does not stretch the one beside it */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/*
+  One result. flex-grow 0 means it will not stretch to fill the row.
+  flex-shrink 1 lets it get narrower than 250px on a phone.
+  flex-basis 250px is the width it wants.
+*/
+.gif-item {
+  flex: 0 1 250px;
+  max-width: 100%;                        /* never wider than the screen */
+  margin: 0;
+}
+
+/*
+  The image itself. width: 100% fills the <li>. height: auto keeps the
+  GIF's real proportions, using the width and height attributes that
+  index.js copies off the API response.
+  display: block removes the small gap browsers leave under inline images.
+*/
+.gif {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  background: var(--gif-frame);
+}
+
+/* ---------------------------------------------------------------------------
+   6. Narrow screens
+   Only when the window is 520px or less. Put these last so they override
+   the button widths above.
+   --------------------------------------------------------------------------- */
+@media (max-width: 520px) {
+  .title {
+    font-size: 1.75rem;
+  }
+
+  /* Stack the buttons and make each one as wide as the form. */
+  .form-actions,
+  .button {
+    width: 100%;
+  }
+}
