@@ -1,0 +1,141 @@
+/* Shared defaults for the whole page. */
+*
+{
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: 400;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Terminal look: green text on a black background. */
+body
+{
+  line-height: 1.5;
+  margin: 20px;
+  padding: 20px;
+  color: green;
+  border: 1px solid green;
+  background-color: black;
+}
+
+/* Page title. */
+h1
+{
+  font-size: 20px;
+}
+
+/* Section headings, such as "System" and "Gather Intelligence". */
+h2
+{
+  font-size: 18px;
+}
+
+/* Smaller headings inside a section, including each hacker's name. */
+h3
+{
+  font-size: 16px;
+}
+
+/* Space above and below every heading. */
+h1, h2, h3
+{
+  margin: 10px 0;
+}
+
+/* Gap between the login block, the logout block, and the intelligence block. */
+section > div
+{
+  margin-bottom: 16px;
+}
+
+/* Stack each label above its input instead of running them together. */
+form
+{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* Login and fetch buttons. */
+button
+{
+  padding: 10px;
+  color: green;
+  border: 1px solid green;
+  background-color: black;
+  cursor: pointer;
+}
+
+/* Pointer change so the buttons feel clickable. */
+button:hover
+{
+  background-color: green;
+  color: black;
+}
+
+/* Labels for email, password, and page number. */
+label
+{
+  padding: 10px;
+  border: 1px dashed green;
+}
+
+/* Text and number fields. */
+input
+{
+  width: 230px;
+  padding: 10px;
+  color: white;
+  border: 1px dashed green;
+  outline: none;
+  background-color: black;
+}
+
+/* Hide the up/down arrows on the page-number field in Chrome and Safari. */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button
+{
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+/* Hide the same arrows in Firefox. */
+input[type=number]
+{
+  -moz-appearance: textfield;
+}
+
+/* Boxes that hold the login message and the hacker list. */
+.container
+{
+  margin: 10px 0;
+  padding: 20px;
+  border: 1px dashed green;
+}
+
+/* One card per hacker returned by the API. */
+.hacker
+{
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px dotted green;
+}
+
+/* Round avatar on each hacker card. */
+.hacker img
+{
+  display: block;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 8px;
+  border-radius: 100%;
+}
+
+/* Email line under the hacker's name. */
+.hacker p
+{
+  margin-top: 4px;
+}
